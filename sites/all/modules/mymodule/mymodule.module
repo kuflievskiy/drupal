@@ -1,0 +1,104 @@
+<?php
+
+use Drupal\image\Entity\ImageStyle;
+use Drupal\file\Entity\File;
+use Drupal\user\Entity\User;
+
+/**
+ * Hook MODULE_help
+ *
+ * @param $route_name
+ * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+ *
+ * @return string
+ */
+function mymodule_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.mymodule':
+      return '<p>' . t('MyModule module') . '</p>';
+  }
+}
+
+/**
+ * Hook MODULE_preprocess_node
+ *
+ * @param $variables
+ *
+ * */
+function mymodule_preprocess_node(array &$variables) {
+  $node = $variables['node'];
+
+  if ($node->bundle() == 'article' && 'article' == $node->getType()) {
+    //$variables['somevar'] = $somevar;
+  }
+}
+
+/**
+ * Hook MODULE_theme
+ *
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ *
+ * @return array
+ */
+function mymodule_theme($existing, $type, $theme, $path) {
+  $theme_templates['test_module_block'] = [
+    'variables' => [
+      'module_path' => '',
+    ],
+  ];
+  return $theme_templates;
+}
+
+
+/**
+ * function MODULE_preprocess_HOOK
+ *
+ * */
+function mymodule_preprocess_test_module_block(&$variables) {
+
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'article')
+    ->condition('status', 1)
+    ->range(0, 2)
+    ->execute();
+
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadMultiple($nids);
+
+  $variables['items'] = [];
+
+  foreach ($nodes as $node) {
+
+    $variables['items'][$node->id()]['title'] = $node->getTitle();
+    $variables['items'][$node->id()]['date'] = \Drupal::service('date.formatter')
+      ->format($node->getChangedTime(), 'custom', 'F j,Y');
+    $variables['items'][$node->id()]['desc'] = $node->body->value;
+
+    $alias = \Drupal::service('path.alias_manager')
+      ->getAliasByPath('/node/' . $node->id());
+    $variables['items'][$node->id()]['url'] = $alias;
+
+    $imageItems = $node->get('field_image')->getValue();
+
+    if (is_array($imageItems) && !empty($imageItems)) {
+      $target_id = $imageItems[0]['target_id'];
+      $file = File::load($target_id);
+      $path = $file->getFileUri();
+      $url = ImageStyle::load('large')->buildUrl($path);
+    }
+    else {
+      $url = '';
+    }
+
+    $variables['items'][$node->id()]['image_url'] = $url;
+  }
+
+  //$test_module_param = \Drupal::configFactory()->get('mymodule.settings')->get('test_module_param');
+
+  //-- This stops the block being cache in drupal 8
+  $variables['#cache']['max-age'] = 0;
+}

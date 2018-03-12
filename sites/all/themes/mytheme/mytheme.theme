@@ -1,0 +1,38 @@
+<?php
+/**
+ * @file
+ *
+ * Place your custom PHP code in this file.
+ */
+use Drupal\Core\Url;
+use Drupal\Core\Link;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\file\Entity\File;
+use Drupal\image\Entity\ImageStyle;
+
+/*
+function mytheme_preprocess_page(&$variables) {
+    // get all articles, written by author
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if ($node) {
+        $query = \Drupal::database()->select('node__field_blog', 'nfb');
+        $query->addField('nfb', 'entity_id');
+        $query->condition('nfb.field_blog_target_id', $node->id() );
+
+        $query->addField( 'node_data', 'title' );
+        $query->addField( 'node_data', 'created' );
+        $query->leftJoin( 'node_field_data', 'node_data', 'node_data.nid=nfb.entity_id' );
+
+        $query->addField( 'nb', 'body_value' );
+        $query->leftJoin( 'node__body', 'nb', 'nb.entity_id=nfb.entity_id' );
+
+        $query->addField('node_img', 'field_image_target_id');
+        $query->leftJoin( 'node__field_image', 'node_img', 'node_img.entity_id=nfb.entity_id' );
+
+        $nids = $query->execute()->fetchAll();
+        $data_to_render = array();
+
+        $variables['author_articles'] = $data_to_render;
+    }
+}
+*/
