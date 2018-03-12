@@ -51,4 +51,11 @@ class MyModuleModel {
     return $query->execute()->fetchAll();
 
   }
+
+  /**
+   * This method is used to reverse array.
+   */
+  public function test( $testData ) {
+    return array_reverse($testData);
+  }
 }
