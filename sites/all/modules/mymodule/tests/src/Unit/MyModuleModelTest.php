@@ -25,10 +25,10 @@ class MyModuleModelTest extends UnitTestCase {
   public function setUp() {
     parent::setUp();
 
-
     $this->container = new ContainerBuilder();
 
     \Drupal::setContainer($this->container);
+
     $connection = $this->prophesize('Drupal\Core\Database\Connection');
     // @link https://www.drupal.org/docs/8/phpunit/using-prophecy
 
@@ -36,10 +36,7 @@ class MyModuleModelTest extends UnitTestCase {
   }
 
   public function testTest() {
-
-  
-  $result = $this->model->test( ['a','b']);
-
+    $result = $this->model->test( ['a','b']);
     $this->assertTrue( is_array( $result ) );
     $this->assertEquals( $result, [ 'b', 'a' ] );
   }

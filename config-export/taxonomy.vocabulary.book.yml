@@ -1,0 +1,9 @@
+uuid: d737134b-448e-4d4d-bb4c-c815c39f126d
+langcode: en
+status: true
+dependencies: {  }
+name: Book
+vid: book
+description: 'This is test taxonomy book'
+hierarchy: 0
+weight: 0
