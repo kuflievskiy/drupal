@@ -102,3 +102,82 @@ function mymodule_preprocess_test_module_block(&$variables) {
   //-- This stops the block being cache in drupal 8
   $variables['#cache']['max-age'] = 0;
 }
+
+
+/**
+ * Implements hook_schema().
+ *
+ * Defines the database tables used by this module.
+ *
+ * @see hook_schema()
+ *
+ * @ingroup mymodule
+ */
+function mymodule_schema() {
+	$schema['mymodule_table'] = [
+		'description' => 'mymodule database table description',
+		'fields' => [
+			'id' => [
+				'type' => 'serial',
+				'length' => 11,
+				'not null' => TRUE,
+				'unsigned' => TRUE,
+			],
+			'uid' => [
+				'type' => 'int',
+				'not null' => TRUE,
+				'unsigned' => TRUE,
+				//'default' => 0,
+				'description' => 'User ID {users}.uid',
+			],
+			'nid' => [
+				'type' => 'int',
+				'not null' => TRUE,
+				'unsigned' => TRUE,
+				//'default' => 0,
+				'description' => 'Poll ID related to this submission',
+			],
+			'node_revision_vid' => [
+				'type' => 'int',
+				'not null' => TRUE,
+				'unsigned' => TRUE,
+				//'default' => 0,
+				'description' => 'Revision ID from the {node_revision}.vid',
+			],
+			'question_id' => [
+				'type' => 'int',
+				'not null' => TRUE,
+				'unsigned' => TRUE,
+				//'default' => 0,
+				'description' => 'Question ID from the list of poll questions',
+			],
+			'answer_id' => [
+				'type' => 'int',
+				'not null' => TRUE,
+				'unsigned' => TRUE,
+				//'default' => 0,
+				'description' => 'Question answer ID from the list of poll questions',
+			],
+			'ip_address' => [
+				'type' => 'varchar',
+				'length' => 255,
+				'not null' => TRUE,
+				'description' => 'IP Address',
+			],
+			'date' => [
+				'type' => 'int',
+				'length' => 11,
+				'not null' => TRUE,
+				'unsigned' => TRUE,
+				'description' => 'Timestamp when this record was submitted',
+			],
+		],
+		'primary key' => ['id'],
+		'indexes' => [
+			'mymodule_field__id__value_id' => ['id'],
+			'mymodule_field__uid__value_uid' => ['uid'],
+		],
+	];
+
+	return $schema;
+}
