@@ -1,0 +1,11 @@
+type: theme
+core_version_requirement: ^8.8 || ^9
+base theme: bartik
+name: 'MyTheme'
+description: ''
+package: ''
+
+regions:
+  header_extra: 'Header (Extra)'
+#libraries:
+#libraries-override:
